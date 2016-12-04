@@ -2,9 +2,10 @@
 Output data of hadoop test question 2
 
 
-Q2:
+# Q2:
 Find out Salary trends between Male and Female employees during each decade in every department. The output should be in the following format: Department, Decade, Gender, avg_salary. Please upload the final CSV along with the code and jar files(if any) to your github and provide the link below.
 
+# Result:
 
 To get this done I have performed  and used "Hive" and "Pig" with query which get the Department name, Decade , Gender and Average salary.
 
@@ -54,15 +55,14 @@ here I have added for Sales department, for deacde "1991-2000" with Male gender,
 
 
 
-2. 
- //below is pig script used to calculate avgerage Salary for male in decade  of 1981 to 1990
-employee_details = LOAD '/usr/sales_male_1981_1990/000000_0' USING PigStorage(',') as (dept_name:chararray,col3:chararray, gender:chararray, salary:int,from_date:chararray);
-employee_group_all = Group employee_details All;
-employee_sal_avg = foreach employee_group_all  Generate
-  AVG(employee_details.salary);
-STORE employee_sal_avg INTO 'file:///home/vishnu/Documents/sales_male_1981_1990_Avg_csv';
+# 2. //below is pig script used to calculate avgerage Salary for male in decade  of 1991 to 2000
 
-Using this pig script calculated average salary for male employees under the decade of 1981 to 1990.
+""
+employee_details = LOAD '/home/vishnu/documents/sales_male_1991_2000/000000_0' USING PigStorage(',') as (dept_name:chararray,col3:chararray, gender:chararray, salary:int,from_date:chararray); employee_group_all = Group employee_details All; employee_sal_avg = foreach employee_group_all Generate flatten(employee_details),AVG(employee_details.salary); STORE employee_sal_avg INTO 'file:///home/vishnu/Desktop/sales_male_1991_2000_Avg_csv';
+
+""
+
+Using this pig script calculated average salary for male employees under the decade of 1991 to 2000.
 In same for other department, decade and gender we can get the result.
 
 In this way,Each depatment then 4 derived decades  for Gender M and Gender F.
@@ -72,23 +72,54 @@ In this way,Each depatment then 4 derived decades  for Gender M and Gender F.
  
  due to in-suffecient space on created hadoop machine Not able to process this large number of all departmnets data, but bty changing values in given script will get the reqired otput files.
  
+ 
+ # The Other Hive and pig commnds used to generate the HIVE table CSV and Out put file in PIG as:
+ 
+ # Following HIVE query is used to get the male from sales department in the decade of 1981-1990
+INSERT OVERWRITE LOCAL DIRECTORY '/home/vishnu/Documents/sales_male_1981_1990' row format delimited fields terminated by ',' select d.dept_name,'1991-2000' as col3,e.gender,s.salary,de.from_date from employees e left join salaries s on (s.emp_no = e.emp_no) left join dept_emp1 de on (e.emp_no = de.emp_no) left join departments d on(d.dept_no = de.dept_no) where (de.from_date between 1981 AND 1990 OR de.to_date between 1981 AND 1990) AND e.gender LIKE 'M' AND d.dept_name LIKE '%Sales%' order by de.from_date;
+
+# Following PIG script is used to get the desired output. It takes csv file as input which is genrated by HIVE
+employee_details = LOAD '/home/vishnu/Documents/sales_male_1981_1990/000000_0' USING PigStorage(',') as (dept_name:chararray,col3:chararray, gender:chararray, salary:int,from_date:chararray);
+employee_group_all = Group employee_details All;
+employee_sal_avg = foreach employee_group_all  Generate
+  flatten(employee_details),AVG(employee_details.salary);
+STORE employee_sal_avg INTO 'file:///home/vishnu/Desktop/sales_male_1981_1990_Avg_csv';
+
+# Following HIVE query is used to get the females from sales department in the decade of 1981-1990
+INSERT OVERWRITE LOCAL DIRECTORY '/home/vishnu/Documents/sales_female_1981_1990' row format delimited fields terminated by ',' select d.dept_name,'1991-2000' as col3,e.gender,s.salary,de.from_date from employees e left join salaries s on (s.emp_no = e.emp_no) left join dept_emp1 de on (e.emp_no = de.emp_no) left join departments d on(d.dept_no = de.dept_no) where (de.from_date between 1981 AND 1990 OR de.to_date between 1981 AND 1990) AND e.gender LIKE 'F' AND d.dept_name LIKE '%Sales%' order by de.from_date;
+
+# Following PIG script is used to get the desired output. It takes csv file as input which is genrated by HIVE
+employee_details = LOAD '/home/vishnu/Documents/sales_female_1981_1990/000000_0' USING PigStorage(',') as (dept_name:chararray,col3:chararray, gender:chararray, salary:int,from_date:chararray);
+employee_group_all = Group employee_details All;
+employee_sal_avg = foreach employee_group_all  Generate
+  flatten(employee_details),AVG(employee_details.salary);
+STORE employee_sal_avg INTO 'file:///home/vishnu/Desktop/sales_female_1981_1990_Avg_csv';
+
+
+# Following HIVE query is used to get the females from sales department in the decade of 1991-2000
+INSERT OVERWRITE LOCAL DIRECTORY '/home/vishnu/Documents/sales_female_1991_2000' row format delimited fields terminated by ',' select d.dept_name,'1991-2000' as col3,e.gender,s.salary,de.from_date from employees e left join salaries s on (s.emp_no = e.emp_no) left join dept_emp1 de on (e.emp_no = de.emp_no) left join departments d on(d.dept_no = de.dept_no) where (de.from_date between 1991 AND 2000 OR de.to_date between 1991 AND 2000) AND e.gender LIKE 'F' AND d.dept_name LIKE '%Sales%' order by de.from_date;
+
+# Following PIG script is used to get the desired output. It takes csv file as input which is genrated by HIVE
+employee_details = LOAD '/home/vishnu/Documents/sales_female_1991_2000/000000_0' USING PigStorage(',') as (dept_name:chararray,col3:chararray, gender:chararray, salary:int,from_date:chararray);
+employee_group_all = Group employee_details All;
+employee_sal_avg = foreach employee_group_all  Generate
+  flatten(employee_details),AVG(employee_details.salary);
+STORE employee_sal_avg INTO 'file:///home/vishnu/Desktop/sales_female_1991_2000_Avg_csv';
+ 
+ 
+ 
  ** Added Folder File details as:
  
- 1. "Dept_sales_Gender_female_Deacde_1981_1990_Avg_csv" this folder, the "Part-r-00000" file get generated and also the "_SUCCESS" get generated and this  used  to store Average salary of all employees who belong under Sales department, Female gender and under 1981-1990 decade.
+ Here I have added main Zip "Q2_OUTPUT_DATA &Details.tar.zip" which contains below parts:
  
+ 1."csv_genrated_using_hive_for_sales_1981_1990_M_F" this directory contains the "Sales" department , Male and female output data of 2 Decades CSV files of tables generated using HIVE. :- 
+  1.1 1981-1990 (male and Female)
+  1.2 1991-2000 (male and female)
+  
+ 2."Second_question_output_csv_for_1981_1990_Male_Female" this directory contains output CSV for Q2 using the PIG:
  
- 2. "Dept_sales_Gender_female_Deacde_1991_2000" this folder have the CSV file  "000000_0" file  which have the List of Sales department , all female employees which belong under "1991-2000" decade.
- 
- 3."Dept_sales_Gender_female_Decade1981_1990" This folder have the CSV file "00000_0" file which have the list of Sales department , all female employees which belong under "1981-1990" decade.
- 
- 4."Dept_sales_Gender_male_Deacde_1981_1990" this folder have the CSV file "000000_0" file have the list of male employees of sales department under 1981-1990 decade.
- 
- 5. "Dept_sales_Gender_male_Deacde_1981_1990_Avg_csv" this folder have, the "Part-r-00000" file get generated and also the "_SUCCESS" get generated and this  used  to store Average salary of all employees who belong under Sales department, male gender and under 1981-1990 decade.
- 
- 6."Dept_sales_Gendermale_Decade1991_2000" this folder have the CSV file  "000000_0" file  which have the List of Sales department , all male employees which belong under "1991-2000" decade.
- 
- 7."Q2_Process_Scripts_used" this text file I have added or the process and script, query used to solve the question 2.
- 
+  2.1 1981-1990 (male and Female)
+  2.2 1991-2000 (male and female)
  
  
  
