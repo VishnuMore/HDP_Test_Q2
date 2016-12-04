@@ -108,7 +108,7 @@ STORE employee_sal_avg INTO 'file:///home/vishnu/Desktop/sales_female_1991_2000_
  
  
  
- ** Added Folder File details as:
+ #  Added Folder File details as:
  
  Here I have added main Zip "Q2_OUTPUT_DATA &Details.tar.zip" which contains below parts:
  
