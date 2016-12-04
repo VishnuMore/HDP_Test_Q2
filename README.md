@@ -81,6 +81,15 @@ In this way,Each depatment then 4 derived decades  for Gender M and Gender F.
  
  3."Dept_sales_Gender_female_Decade1981_1990" This folder have the CSV file "00000_0" file which have the list of Sales department , all female employees which belong under "1981-1990" decade.
  
+ 4."Dept_sales_Gender_male_Deacde_1981_1990" this folder have the CSV file "000000_0" file have the list of male employees of sales department under 1981-1990 decade.
+ 
+ 5. "Dept_sales_Gender_male_Deacde_1981_1990_Avg_csv" this folder have, the "Part-r-00000" file get generated and also the "_SUCCESS" get generated and this  used  to store Average salary of all employees who belong under Sales department, male gender and under 1981-1990 decade.
+ 
+ 6."Dept_sales_Gendermale_Decade1991_2000" this folder have the CSV file  "000000_0" file  which have the List of Sales department , all male employees which belong under "1991-2000" decade.
+ 
+ 7."Q2_Process_Scripts_used" this text file I have added or the process and script, query used to solve the question 2.
+ 
+ 
  
  
  
